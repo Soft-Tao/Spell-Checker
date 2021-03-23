@@ -12,7 +12,7 @@ struct Node
 typedef struct Node *LinkList;
 typedef LinkList *PLinkList;
 
-LinkList Dictionary(void)
+LinkList Dictionary(void)//生成一个链表，用于储存字典内容
 {
     PNode head,p,q;
     head = (PNode)malloc(sizeof(struct Node));
@@ -22,7 +22,7 @@ LinkList Dictionary(void)
     while (1)
     {
         scanf ("%s", str);
-        if (strcmp(str,"#") == 0)
+        if (strcmp(str,"#") == 0)//还没有到结束符
         {
             break;
         }
@@ -35,7 +35,7 @@ LinkList Dictionary(void)
     return head;
 }
 
-int Find (PLinkList plist, char* str)
+int Find (PLinkList plist, char* str)//是否能在字典中找到完全匹配的，如果找到，则返回1，找不到返回0
 {
     PNode p;
     p = *plist;
@@ -50,7 +50,7 @@ int Find (PLinkList plist, char* str)
     return 0;
 }
 
-void CLosely_Equal (PLinkList plist, char* str)
+void CLosely_Equal (PLinkList plist, char* str)//在字典中找到相似的单词
 {
     int i,count,j;
     PNode p;
@@ -59,19 +59,19 @@ void CLosely_Equal (PLinkList plist, char* str)
     while (p->link != NULL)
     {
         p=p->link;
-        if (strlen(p->word) == strlen(str))
+        if (strlen(p->word) == strlen(str))//如果字符串长度相等，则只可能是有替换的情况
         {
             count = 0;
             for (i=0;i<strlen(str);i++)
             {
                 if (str[i] == p->word[i]) count++;
             }
-            if (count == strlen(str)-1)
+            if (count == strlen(str)-1)//如果只有一个不一样，则相似
             {
                 printf(" %s", p->word);
             }
         }
-        else if (strlen(p->word) == strlen(str)+1)
+        else if (strlen(p->word) == strlen(str)+1)//如果字典中的词汇长度比待查找的多一位
         {
             count = 0;
             i=0;
@@ -84,17 +84,17 @@ void CLosely_Equal (PLinkList plist, char* str)
                     j++;
                     count++;
                 }
-                else
+                else//如果不等，跳过这一位继续比较
                 {
                     i++;
                 }
             }
-            if (count == strlen(str))
+            if (count == strlen(str))//如果待查找的所有字符都有匹配，说明是删减的情况
             {
                 printf (" %s", p->word);
             }
         }
-        else if (strlen(p->word)+1 == strlen(str))
+        else if (strlen(p->word)+1 == strlen(str))//如果待查找的字符串长度比字典字符串多一位
         {
             count = 0;
             i=0;
@@ -112,7 +112,7 @@ void CLosely_Equal (PLinkList plist, char* str)
                     j++;
                 }
             }
-            if (count == strlen(p->word))
+            if (count == strlen(p->word))//如果字典字符串中的每个字符都能在待查找的词汇中找到对应，则说明是增添的情况
             {
                 printf(" %s", p->word);
             }
@@ -125,13 +125,13 @@ int main (void)
 {
     LinkList DIC,BOO;
     DIC = Dictionary();
-    BOO = Dictionary();
+    BOO = Dictionary();//输入
 
     PNode p;
     p = BOO;
     while (p->link != NULL)
     {
-        p=p->link;
+        p=p->link;//挨个判断是否为完全相等，相似，不相似的情况
         if (Find(&DIC, p->word) == 1)
         {
             printf("%s is correct\n", p->word);
